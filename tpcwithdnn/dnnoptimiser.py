@@ -83,8 +83,8 @@ class DnnOptimiser:
                  self.dropout, self.depth, self.batch_normalization, self.use_scaler)
         self.suffix = "%s_useSCMean%d_useSCFluc%d" % \
                 (self.suffix, self.opt_train[0], self.opt_train[1])
-        self.suffix = "%s_pred_doR%d_dophi%d_doz%d" % \
-                (self.suffix, self.opt_predout[0], self.opt_predout[1], self.opt_predout[2])
+        self.suffix = "%s_pred_doR%d_dophi%d_doz%d_Nev%d" % \
+                (self.suffix, self.opt_predout[0], self.opt_predout[1], self.opt_predout[2],self.rangeevent_train[1])
 
         self.logger.info("DnnOptimizer::Init")
         self.logger.info("I am processing the configuration %s", self.suffix)
