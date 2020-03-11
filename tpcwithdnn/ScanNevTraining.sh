@@ -1,6 +1,6 @@
 #!/bin/bash
 
-Nev_arr=(100 200 300 400 500 600 700 800 900);
+Nev_arr=(500 1000 1500 2000 5000);
 
 for i in "${!Nev_arr[@]}" ; do
 	echo "python steer_analysis.py --Nev ${Nev_arr[$i]}";
