@@ -13,7 +13,7 @@ from symmetrypadding3d import symmetryPadding3d
 from machine_learning_hep.logger import get_logger
 from fluctuationDataGenerator import fluctuationDataGenerator
 from utilitiesdnn import UNet
-from dataloader import loadtrain_test, loaddata_original
+from dataloader import loadtrain_test, loaddata_original, loaddata_predicted
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 
@@ -152,7 +152,7 @@ class DnnOptimiser:
         t.Branch('meanid', meanid, 'meanid/I')
         t.Branch('randomid', randomid, 'randomid/I')
 
-        for iexperiment in self.indexmatrix_ev_mean:
+        for iexperiment in self.indexmatrix_ev_mean_apply:
             print("processing event", iexperiment)
             indexev = iexperiment
 
@@ -163,6 +163,8 @@ class DnnOptimiser:
              vecMeanDistRPhi, vecRandomDistRPhi,
              vecMeanDistZ, vecRandomDistZ] = loaddata_original(self.dirinput, indexev)
 
+            [distRFluct] = loaddata_predicted(self.dirval, self.suffix, iexperiment)
+            print(distRFluct)
             vecRPos_ = vecRPos.reshape(self.grid_phi, self.grid_r, self.grid_z*2)
             vecPhiPos_ = vecPhiPos.reshape(self.grid_phi, self.grid_r, self.grid_z*2)
             vecZPos_ = vecZPos.reshape(self.grid_phi, self.grid_r, self.grid_z*2)
@@ -269,7 +271,11 @@ class DnnOptimiser:
             distortionPredict_group = loaded_model.predict(x_single)
             distortionPredict_flatm = distortionPredict_group.reshape(-1, 1)
             distortionPredict_flata = distortionPredict_group.flatten()
-
+            from numpy import asarray
+            from numpy import save
+            save("%s/array%s_rnd%d_mean%d.npy" % (self.dirval, self.suffix,
+                                                  iexperiment[0], iexperiment[1]), distortionPredict_flata)
+            print("s", distortionPredict_flata.shape)
             distortionNumeric_group = y_single
             distortionNumeric_flatm = distortionNumeric_group.reshape(-1, 1)
             distortionNumeric_flata = distortionNumeric_group.flatten()

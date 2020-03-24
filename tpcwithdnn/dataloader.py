@@ -33,6 +33,11 @@ def loaddata_original(inputdata, indexev):
             vecMeanDistRPhi, vecRandomDistRPhi,
             vecMeanDistZ, vecRandomDistZ]
 
+def loaddata_predicted(inputdata, suffix, indexev):
+
+    distRFluctFile = inputdata + '/array' + suffix + '_rnd%d_mean%d.npy' % (indexev[0], indexev[1])
+    distRFluct = np.load(distRFluctFile)
+    return [distRFluct]
 
 def loaddata(inputdata, indexev, selopt_input, selopt_output):
 
